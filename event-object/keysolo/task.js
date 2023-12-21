@@ -4,6 +4,7 @@ class Game {
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
+    this.timeElement = container.querySelector('.status__time');
 
     this.reset();
 
@@ -17,6 +18,29 @@ class Game {
   }
 
   registerEvents() {
+    let symbol = this.currentSymbol.textContent;
+    const that = this;
+    this.timeElement.textContent = this.wordElement.children.length;
+
+    setInterval(() => {
+      this.timeElement.textContent--;
+
+      if (Number(this.timeElement.textContent) === 0) {
+        this.fail();
+        this.timeElement.textContent = this.wordElement.children.length;
+      }
+    }, 1000);
+
+    document.addEventListener('keyup', function (event) {
+      if (event.key.toLowerCase() === symbol) {
+        that.success();
+      } else {
+        that.fail();
+      }
+
+      symbol = that.currentSymbol.textContent;
+    });
+
     /*
       TODO:
       Написать обработчик события, который откликается
@@ -28,7 +52,7 @@ class Game {
   }
 
   success() {
-    if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
+    if (this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
     this.currentSymbol.classList.add('symbol_correct');
     this.currentSymbol = this.currentSymbol.nextElementSibling;
 
@@ -42,10 +66,11 @@ class Game {
       this.reset();
     }
     this.setNewWord();
+    this.timeElement.textContent = this.wordElement.children.length;
   }
 
   fail() {
-    if (++this.lossElement.textContent === 5) {
+    if (++this.lossElement.textContent === 5 || Number(this.timeElement.textContent) === 0) {
       alert('Вы проиграли!');
       this.reset();
     }
@@ -60,18 +85,18 @@ class Game {
 
   getWord() {
     const words = [
-        'bob',
-        'awesome',
-        'netology',
-        'hello',
-        'kitty',
-        'rock',
-        'youtube',
-        'popcorn',
-        'cinema',
-        'love',
-        'javascript'
-      ],
+      'bob',
+      'awesome',
+      'netology',
+      'hello',
+      'kitty',
+      'rock',
+      'youtube',
+      'popcorn',
+      'cinema',
+      'love',
+      'javascript'
+    ],
       index = Math.floor(Math.random() * words.length);
 
     return words[index];
@@ -81,7 +106,7 @@ class Game {
     const html = [...word]
       .map(
         (s, i) =>
-          `<span class="symbol ${i === 0 ? 'symbol_current': ''}">${s}</span>`
+          `<span class="symbol ${i === 0 ? 'symbol_current' : ''}">${s}</span>`
       )
       .join('');
     this.wordElement.innerHTML = html;
