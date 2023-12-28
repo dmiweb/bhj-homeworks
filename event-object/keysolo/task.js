@@ -7,8 +7,18 @@ class Game {
     this.timeElement = container.querySelector('.status__time');
 
     this.reset();
-
+    this.timer();
     this.registerEvents();
+  }
+
+  timer() {
+    setInterval(() => {
+      this.timeElement.textContent--;
+
+      if (Number(this.timeElement.textContent) === 0) {
+        this.fail();
+      }
+    }, 1000);
   }
 
   reset() {
@@ -20,16 +30,6 @@ class Game {
   registerEvents() {
     let symbol = this.currentSymbol.textContent;
     const that = this;
-    this.timeElement.textContent = this.wordElement.children.length;
-
-    setInterval(() => {
-      this.timeElement.textContent--;
-
-      if (Number(this.timeElement.textContent) === 0) {
-        this.fail();
-        this.timeElement.textContent = this.wordElement.children.length;
-      }
-    }, 1000);
 
     document.addEventListener('keyup', function (event) {
       if (event.key.toLowerCase() === symbol) {
@@ -66,7 +66,6 @@ class Game {
       this.reset();
     }
     this.setNewWord();
-    this.timeElement.textContent = this.wordElement.children.length;
   }
 
   fail() {
@@ -79,8 +78,8 @@ class Game {
 
   setNewWord() {
     const word = this.getWord();
-
     this.renderWord(word);
+    this.timeElement.textContent = this.wordElement.children.length;
   }
 
   getWord() {
@@ -116,4 +115,3 @@ class Game {
 }
 
 new Game(document.getElementById('game'))
-
