@@ -78,8 +78,8 @@ class Game {
 
   setNewWord() {
     const word = this.getWord();
+    this.timeElement.textContent = word.length;
     this.renderWord(word);
-    this.timeElement.textContent = this.wordElement.children.length;
   }
 
   getWord() {
