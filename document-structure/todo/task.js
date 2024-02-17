@@ -5,7 +5,8 @@
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (taskInput.value !== '') {
+    
+    if (taskInput.value.trim()) {
       taskCreation(taskInput);
     }
 
@@ -15,9 +16,11 @@
   const taskCreation = (element) => {
     const taskWrap = document.createElement('div');
     taskWrap.classList.add('task');
+    
     const taskTitle = document.createElement('div');
     taskTitle.classList.add('task__title');
-    taskTitle.textContent = element.value;
+    taskTitle.textContent = element.value.trim();
+    
     const taskRemove = document.createElement('a');
     taskRemove.href = '#';
     taskRemove.classList.add('task__remove');
