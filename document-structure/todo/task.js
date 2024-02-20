@@ -5,33 +5,32 @@
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     if (taskInput.value.trim()) {
       taskCreation(taskInput);
     }
 
+    taskRemove();
     form.reset();
   });
 
   const taskCreation = (element) => {
-    const taskWrap = document.createElement('div');
-    taskWrap.classList.add('task');
-    
-    const taskTitle = document.createElement('div');
-    taskTitle.classList.add('task__title');
-    taskTitle.textContent = element.value.trim();
-    
-    const taskRemove = document.createElement('a');
-    taskRemove.href = '#';
-    taskRemove.classList.add('task__remove');
-    taskRemove.innerHTML = '&times;';
+    const newTask = `
+      <div class="task">
+      <div class="task__title">${element.value.trim()}</div>
+      <a href="#" class="task__remove">&times;</a>
+      </div>`;
 
-    tasksList.appendChild(taskWrap);
-    taskWrap.appendChild(taskTitle);
-    taskWrap.appendChild(taskRemove);
+    tasksList.insertAdjacentHTML('beforeEnd', newTask);
+  }
 
-    taskRemove.onclick = function () {
-      this.parentElement.remove();
+  function taskRemove() {
+    const taskRemoveBtn = document.querySelectorAll('.task__remove');
+    for (let i = 0; i < taskRemoveBtn.length; i++) {
+      taskRemoveBtn[i].addEventListener('click', (e) => {
+        e.preventDefault();
+        taskRemoveBtn[i].parentElement.remove();
+      });
     }
   }
 })();
