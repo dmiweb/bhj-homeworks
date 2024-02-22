@@ -8,6 +8,8 @@
   const productCart = document.querySelector('.cart__products');
   const productItemsCart = document.getElementsByClassName('cart__product');
   const productCountsCart = document.getElementsByClassName('cart__product-count');
+  const removeItemBtn = document.getElementsByClassName('task__remove');
+
   const articleCache = [];
 
   for (let i = 0; i < productInc.length; i++) {
@@ -28,31 +30,19 @@
 
   for (let i = 0; i < productAddButtons.length; i++) {
     productAddButtons[i].addEventListener('click', () => {
-      const createProduct = document.createElement('div');
-      createProduct.classList.add('cart__product');
       const articleProduct = productItems[i].getAttribute('data-id');
-      createProduct.dataset.id = articleProduct;
 
-      const createImgProduct = document.createElement('img');
-      createImgProduct.classList.add('cart__product-image');
-      createImgProduct.src = productImages[i].src;
-
-      const createCountProduct = document.createElement('div');
-      createCountProduct.classList.add('cart__product-count');
-      createCountProduct.textContent = Number(productCounts[i].textContent);
-
-      const productRemove = document.createElement('a');
-      productRemove.href = '#';
-      productRemove.classList.add('task__remove');
-      productRemove.innerHTML = '&times;';
+      const createProduct = `
+        <div class="cart__product" data-id="${articleProduct}">
+          <img src="${productImages[i].src}" class="cart__product-image" alt="">
+          <div class="cart__product-count">${Number(productCounts[i].textContent)}</div>
+          <a class="task__remove" href="#">&times;</a>
+        </div>`;
 
       let productIndex = articleCache.indexOf(articleProduct);
 
       if (!articleCache.includes(articleProduct)) {
-        productCart.appendChild(createProduct);
-        createProduct.appendChild(createImgProduct);
-        createProduct.appendChild(createCountProduct);
-        createProduct.appendChild(productRemove);
+        productCart.insertAdjacentHTML('beforeEnd', createProduct);
         productCart.parentElement.classList.remove('visually-hidden');
         articleCache.push(articleProduct);
       } else {
@@ -85,16 +75,21 @@
         let id = setInterval(productAddAnimation, 0);
       }
 
-      productRemove.onclick = function (e) {
-        e.preventDefault();
-        this.parentElement.remove();
-        productIndex = articleCache.indexOf(articleProduct);
-        articleCache.splice(productIndex, 1);
+      removeButtons = Array.from(removeItemBtn);
 
-        if (articleCache.length === 0) {
-          productCart.parentElement.classList.add('visually-hidden');
+      removeButtons.forEach(function (button) {
+        button.onclick = function () {
+          button.parentElement.remove();
+
+          const articleProductRemove = button.parentElement.getAttribute('data-id');
+          productIndex = articleCache.indexOf(articleProductRemove);
+          articleCache.splice(productIndex, 1);
+
+          if (articleCache.length === 0) {
+            productCart.parentElement.classList.add('visually-hidden');
+          }
         }
-      }
+      });
     });
   }
 })();

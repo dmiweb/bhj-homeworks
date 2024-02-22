@@ -10,7 +10,6 @@
       taskCreation(taskInput);
     }
 
-    taskRemove();
     form.reset();
   });
 
@@ -18,22 +17,9 @@
     const newTask = `
       <div class="task">
       <div class="task__title">${element.value.trim()}</div>
-      <a href="#" class="task__remove">&times;</a>
+      <a href="#" onclick="this.parentElement.remove();" class="task__remove">&times;</a>
       </div>`;
 
     tasksList.insertAdjacentHTML('beforeEnd', newTask);
   }
-
-  function taskRemove() {
-    const taskRemoveBtn = document.querySelectorAll('.task__remove');
-    for (let i = 0; i < taskRemoveBtn.length; i++) {
-      taskRemoveBtn[i].addEventListener('click', (e) => {
-        e.preventDefault();
-        taskRemoveBtn[i].parentElement.remove();
-      });
-    }
-  }
 })();
-
-
-
