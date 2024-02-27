@@ -8,7 +8,6 @@
   const productCart = document.querySelector('.cart__products');
   const productItemsCart = document.getElementsByClassName('cart__product');
   const productCountsCart = document.getElementsByClassName('cart__product-count');
-  const removeItemBtn = document.getElementsByClassName('task__remove');
 
   const articleCache = [];
 
@@ -74,23 +73,22 @@
 
         let id = setInterval(productAddAnimation, 0);
       }
-
-      removeButtons = Array.from(removeItemBtn);
-
-      removeButtons.forEach(function (button) {
-        button.onclick = function () {
-          button.parentElement.remove();
-
-          const articleProductRemove = button.parentElement.getAttribute('data-id');
-          productIndex = articleCache.indexOf(articleProductRemove);
-          articleCache.splice(productIndex, 1);
-
-          if (articleCache.length === 0) {
-            productCart.parentElement.classList.add('visually-hidden');
-          }
-        }
-      });
     });
   }
+
+  document.addEventListener('click', (e) => {
+    const button = e.target.closest('.task__remove');
+    if (button) {
+      button.parentElement.remove();
+
+      const articleProductRemove = button.parentElement.getAttribute('data-id');
+      const productIndexRemove = articleCache.indexOf(articleProductRemove);
+      articleCache.splice(productIndexRemove, 1);
+
+      if (articleCache.length === 0) {
+        productCart.parentElement.classList.add('visually-hidden');
+      }
+    }
+  });
 })();
 

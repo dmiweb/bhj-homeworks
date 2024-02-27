@@ -17,9 +17,16 @@
     const newTask = `
       <div class="task">
       <div class="task__title">${element.value.trim()}</div>
-      <a href="#" onclick="this.parentElement.remove();" class="task__remove">&times;</a>
+      <a href="#" class="task__remove">&times;</a>
       </div>`;
 
     tasksList.insertAdjacentHTML('beforeEnd', newTask);
+
+    document.addEventListener('click', (e) => {
+      const button = e.target.closest('.task__remove');
+      if (button) {
+        button.parentElement.remove();
+      }
+    });
   }
 })();
