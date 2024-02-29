@@ -45,3 +45,11 @@
   display: block;
   text-align: center;
 }
+
+.logout {
+  display: block;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-top: 20px;
+}

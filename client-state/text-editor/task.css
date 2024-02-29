@@ -8,3 +8,9 @@ textarea {
   border: 1px solid #e2e2e2;
   box-sizing: border-box;
 }
+
+.clear_button {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
