@@ -5,6 +5,12 @@ const welcomBlock = document.querySelector('.welcome');
 const userId = document.querySelector('#user_id');
 const logoutButton = document.querySelector('.logout');
 
+if(localStorage.user_id){
+  authorizationForm.closest('.signin').classList.remove('signin_active');
+  welcomBlock.classList.add('welcome_active');
+  userId.textContent = localStorage.user_id;
+}
+
 authorizationForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -16,9 +22,10 @@ authorizationForm.addEventListener('submit', (e) => {
 
   const authFormData = new FormData(authorizationForm);
   const xhr = new XMLHttpRequest();
+  xhr.responseType = 'json';
 
   xhr.addEventListener('loadend', () => {
-    const authResponse = JSON.parse(xhr.response);
+    const authResponse = xhr.response;
 
     if (authResponse.success) {
       authorizationForm.closest('.signin').classList.remove('signin_active');
@@ -43,4 +50,5 @@ logoutButton.addEventListener('click', () => {
   authorizationForm.closest('.signin').classList.add('signin_active');
   welcomBlock.classList.remove('welcome_active');
   authorizationForm.reset();
+  delete localStorage.user_id;
 });
